@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Top Brands 🏷️ | LeseCart</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f8ff;
+      color: #333;
+    }
+
+    /* Filter dropdown */
+    .brand-filter {
+      padding: 1rem;
+      text-align: center;
+      background: #e6f2ff;
+    }
+
+    .brand-filter select {
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* Brand Cards */
+    .brand-logos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 2rem;
+    }
+
+    .brand-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .brand-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .brand-card img {
+      width: 120px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .brand-desc {
+      font-size: 0.9rem;
+      color: #555;
+      min-height: 48px;
+    }
+
+    /* Products */
+    .brand-products {
+      padding: 1rem 2rem 3rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      background: #ffffffcc;
+      border-top: 2px solid #007acc;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 1rem;
+      user-select: none;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.25s;
+    }
+    .product-card img:hover {
+      transform: scale(1.05);
+    }
+
+    .product-card h4 {
+      margin: 10px 0 6px 0;
+      font-size: 1.1rem;
+      color: #007acc;
+    }
+
+    .product-card p {
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #222;
+    }
+
+    .product-card button {
+      margin: 5px 6px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+      user-select: none;
+      transition: background-color 0.3s;
+    }
+
+    .wishlist-btn {
+      background: #ff6b6b;
+      color: white;
+    }
+    .wishlist-btn:hover {
+      background: #e14b4b;
+    }
+
+    .cart-btn {
+      background: #38b000;
+      color: white;
+    }
+    .cart-btn:hover {
+      background: #2e8b00;
+    }
+
+    /* Modal */
+    .popup-modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 450px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      cursor: pointer;
+      font-size: 24px;
+      color: #888;
+      user-select: none;
+      transition: color 0.3s;
+    }
+    .close-modal:hover {
+      color: #007acc;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      display: none;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      user-select: none;
+    }
+
+    /* Footer */
+    .footer-btns {
+      text-align: center;
+      padding: 2rem;
+      background: #007acc;
+    }
+
+    .footer-btns a {
+      background: white;
+      color: #007acc;
+      padding: 12px 24px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+    .footer-btns a:hover {
+      background: #005f99;
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      .brand-filter select {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Filter -->
+<section class="brand-filter">
+  <label for="brandType"><strong>Filter by Brand Type:</strong></label>
+  <select id="brandType" onchange="filterBrands()">
+    <option value="all">All</option>
+    <option value="luxury">Luxury</option>
+    <option value="office">Officewear</option>
+    <option value="kids">Kids-Friendly</option>
+    <option value="affordable">Affordable</option>
+  </select>
+</section>
+
+<!-- Brand Grid -->
+<section class="brand-logos" id="brandGrid">
+  <!-- JS injected -->
+</section>
+
+<!-- Products -->
+<section class="brand-products" id="productSection">
+  <!-- JS injected -->
+</section>
+
+<!-- Modal -->
+<div class="popup-modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="popup-content">
+    <span class="close-modal" role="button" aria-label="Close modal" tabindex="0" onclick="closeModal()" onkeypress="if(event.key==='Enter'){closeModal()}">✖</span>
+    <div id="modalDetails"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toastMsg" role="alert" aria-live="assertive"></div>
+
+<!-- Footer -->
+<div class="footer-btns">
+  <a href="index.html">⬅ Back to Home</a>
+</div>
+
+<script>
+  const brands = [
+    // Luxury
+    {
+      name: "Ray-Ban",
+      logo: "https://brandlogos.net/wp-content/uploads/2014/10/Ray-Ban-logo.png",
+      type: "luxury",
+      desc: "Iconic American brand known for timeless style and UV protection.",
+      products: [
+        { name: "Aviator Classic", img: "https://www.gkboptical.com/media/catalog/product/cache/8369743ccc32c072031a11bccb3e2472/r/y/ry554gl58_a_1.jpg", price: "₹4999" },
+        { name: "Wayfarer Bold", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL2Dq9w0fJ6zvZBPU_dPrlMbkStTVPgbrYMQ&s", price: "₹5499" }
+      ]
+    },
+    {
+      name: "Vogue Eyewear",
+      logo: "https://w7.pngwing.com/pngs/636/443/png-transparent-vogue-paris-magazine-fashion-logo-others-thumbnail.png",
+      type: "luxury",
+      desc: "Fashion-first designer frames for the bold and stylish.",
+      products: [
+        { name: "Elegant Cat-Eye", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp7hS3K4x2pmzBsaDkrDWIE4meYvhniNG0Aw&s", price: "₹6999" }
+      ]
+    },
+    {
+      name: "Oakley",
+      logo: "https://i.pinimg.com/1200x/f5/c1/94/f5c19452a6378b369903e692c3bb3692.jpg",
+      type: "luxury",
+      desc: "Sports and performance eyewear with advanced technology.",
+      products: [
+        { name: "Radar EV", img: "https://www.asiansports.in/cdn/shop/files/33_999e6904-304d-4315-9193-67d0f7a81fd1.png?v=1735379410", price: "₹7999" },
+        { name: "Flak 2.0 XL", img: "https://www.asiansports.in/cdn/shop/files/Untitleddesign_23.png?v=1708588586", price: "₹8499" }
+      ]
+    },
+
+    // Officewear
+    {
+      name: "Titan Eye+",
+      logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt8Kjh2zpLFKQocE3Ghw5lOWvWB2OxAftnYg&sg",
+      type: "office",
+      desc: "Trusted Indian brand offering stylish, durable, and affordable eyewear designed for office and daily use.",
+      products: [
+        { name: "Full Rim Steel", img: "https://static5.lenskart.com/media/catalog/product/pro/1/thumbnail/480x480/9df78eab33525d08d6e5fb8d27136e95//v/i/vincent-chase-full-rim-round-vc-e12423-c2-eyeglasses_vincent-chase-full-rim-round-vc-e12423-c2-eyeglasses_g_7511.jpg", price: "₹2999" },
+        { name: "Rimless UltraLight", img: "https://5.imimg.com/data5/ECOM/Default/2024/2/393452033/GE/ST/JI/31823388/hb335469ff6804ae8a45b9b7b15166bb6x-500x500.jpg", price: "₹3199" },
+        { name: "Semi-Rimless Classic", img: "https://m.media-amazon.com/images/I/61KGUhuwPFL._UY1100_.jpg", price: "₹3499" },
+        { name: "Round Clear Lens", img: "https://static5.lenskart.com/media/catalog/product/pro/1/thumbnail/480x480/9df78eab33525d08d6e5fb8d27136e95//l/i/blue-block-phone-&-computer-glasses:-transparent-full-rim-round-lenskart-blu-glasses-lb-e14453-c4_g_804811_03_2022.jpg",price: "₹3000" }     ]
+    },
+    {
+      name: "John Jacobs",
+      logo: "https://www.lucknow.lulumall.in/wp-content/uploads/2024/05/John-Jacobs.jpg",
+      type: "office",
+      desc: "Classic office eyewear combining style with comfort.",
+      products: [
+        { name: "Round Frame", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXJWrWIjWUFDl9coqww9_EHxN500A5wV_unw&s", price: "₹3499" },
+        { name: "Rectangular Frame", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTddQG9ACc-X0nXMmcbWdT_sjdHtkTrXKeQ0g&s", price: "₹3699" }
+      ]
+    },
+
+    // Kids-Friendly
+    {
+      name: "Chicco",
+      logo: "https://images.shopcdn.co.uk/bf/3d/bf3d16247c3f5f06de832781025d5f47/774x431/webp/fit?quality=80&compression=80",
+      type: "kids",
+      desc: "Soft and safe frames specially designed for kids.",
+      products: [
+        { name: "Pink Oval", img: "https://static.wixstatic.com/media/2b2453_01f1afa3bea14a02b6b46032cce7a55e~mv2.jpg/v1/fill/w_980,h_980,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/2b2453_01f1afa3bea14a02b6b46032cce7a55e~mv2.jpg", price: "₹1500" },
+        { name:" blue round", img: "https://m.media-amazon.com/images/I/512zm1fUKJL._UY1000_.jpg", price: "₹1600" }
+      ]
+    },
+    {
+      name: "Lunettes Kids",
+      logo: "https://img.freepik.com/premium-vector/head-child-glasses-kids-educational-channel-logo_648939-41.jpg",
+      type: "kids",
+      desc: "Fun and durable eyewear for active kids.",
+      products: [
+        { name: "Star Frame", img: "https://static5.lenskart.com/media/catalog/product/pro/1/thumbnail/480x480/9df78eab33525d08d6e5fb8d27136e95//h/i/kids-glasses:-black-blue-transparent-black-full-rim-rectangle-kids--8-12-yrs--hooper-astra-hooper-hp-e10014l-c4_hooper-hp-e10014l-c4-eyeglasses_g_0982_22_march23.jpg.jpg", price: "₹1200" },
+        { name: "Heart Frame", img: "https://prettycollected.com/cdn/shop/products/RedHeartSunglasses-BachelorettePartySunglasses-BachelorettePartyFavors-BridesmaidGifts-PrettyCollected-586977_1200x.jpg?v=1652162963", price: "₹1300" }
+      ]
+    },
+
+    // Affordable
+    {
+      name: "Fastrack",
+      logo: "https://seeklogo.com/images/F/fastrack-logo-B9489396C8-seeklogo.com.png",
+      type: "affordable",
+      desc: "Youthful and trendy glasses at budget-friendly prices.",
+      products: [
+        { name: "Black Frame", img: "https://img.tatacliq.com/images/i7/437Wx649H/MP000000009617366_437Wx649H_202105251740321.jpeg", price: "₹1999" },
+        { name: "Blue Fade", img: "https://content.jdmagicbox.com/quickquotes/images_main/male-fastrack-sunglasses-for-men-s-2182810203-jszu8xu5.jpg?impolicy=queryparam&im=Resize=(360,360),aspect=fit", price: "₹1799" }
+      ]
+    },
+    {
+      name: "Elligator",
+      logo: "data:image/jpeg;base64,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",
+      type: "affordable",
+      desc: "Affordable stylish frames for everyday use.",
+      products: [
+        { name: "Classic Square", img: "https://m.media-amazon.com/images/I/61DpnSvwLPL._UY1100_.jpg", price: "₹1599" },
+        { name: "Round Metal", img: "https://m.media-amazon.com/images/I/71fUZcbi9AL._UY1100_.jpg", price: "₹1699" }
+      ]
+    }
+  ];
+
+  const brandGrid = document.getElementById("brandGrid");
+  const productSection = document.getElementById("productSection");
+
+  // Load brands filtered by type
+  function loadBrands(filter = "all") {
+    brandGrid.innerHTML = "";
+    const filtered = brands.filter(b => filter === "all" || b.type === filter);
+    filtered.forEach(brand => {
+      const card = document.createElement("div");
+      card.className = "brand-card";
+      card.innerHTML = `
+        <img src="${brand.logo}" alt="${brand.name} logo" loading="lazy" />
+        <h4>${brand.name}</h4>
+        <p class="brand-desc">${brand.desc}</p>
+      `;
+      card.onclick = () => showBrandProducts(brand.name);
+      brandGrid.appendChild(card);
+    });
+    productSection.innerHTML = "";
+  }
+
+  // Show products for selected brand
+  function showBrandProducts(brandName) {
+    const brand = brands.find(b => b.name === brandName);
+    productSection.innerHTML = "";
+    if (brand && brand.products) {
+      brand.products.forEach(prod => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+          <img src="${prod.img}" alt="${prod.name}" onclick="openModal('${prod.name}', '${prod.img}', '${prod.price}')" loading="lazy" />
+          <h4>${prod.name}</h4>
+          <p>${prod.price}</p>
+          <button class="wishlist-btn" onclick="addToList(event, 'wishlist', '${prod.name}', '${prod.img}', '${prod.price}')">❤️ Wishlist</button>
+          <button class="cart-btn" onclick="addToList(event, 'cart', '${prod.name}', '${prod.img}', '${prod.price}')">🛒 Add to Cart</button>
+        `;
+        productSection.appendChild(card);
+      });
+      productSection.scrollIntoView({behavior: "smooth"});
+    }
+  }
+
+  // Modal functions
+  function openModal(name, img, price) {
+    document.getElementById("modalDetails").innerHTML = `
+      <h3 id="modalTitle">${name}</h3>
+      <img src="${img}" alt="${name}" style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:1rem;">
+      <p><strong>Price:</strong> ${price}</p>
+      <p>High-quality frame from our curated premium collection.</p>
+    `;
+    document.getElementById("productModal").style.display = "flex";
+  }
+  function closeModal() {
+    document.getElementById("productModal").style.display = "none";
+  }
+
+  // Filter brands dropdown handler
+  function filterBrands() {
+    const filter = document.getElementById("brandType").value;
+    loadBrands(filter);
+  }
+
+  // Add to wishlist/cart with localStorage and toast
+  function addToList(event, type, name, img, price) {
+    event.stopPropagation(); // prevent brand product popup
+    const item = { name, img, price };
+    let list = JSON.parse(localStorage.getItem(type)) || [];
+    if (list.find(i => i.name === name)) {
+      showToast(`${name} is already in your ${type}`);
+      return;
+    }
+    list.push(item);
+    localStorage.setItem(type, JSON.stringify(list));
+    showToast(`${name} added to ${type}`);
+  }
+
+  // Toast message
+  function showToast(msg) {
+    const toast = document.getElementById("toastMsg");
+    toast.innerText = msg;
+    toast.style.display = "block";
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 2000);
+  }
+
+  // Initial load
+  loadBrands();
+
+  // Close modal on clicking outside content
+  document.getElementById("productModal").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+
+  // Accessibility: close modal with Escape key
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeModal();
+  });
+</script>
+
+</body>
+</html>
+

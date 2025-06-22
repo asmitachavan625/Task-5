@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Men's Eyewear - LeseCart 👓</title>
+<style>
+  /* Reset & basics */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; font-family: Arial, sans-serif; background: #f0f8ff;
+    color: #004080;
+  }
+  a {
+    text-decoration: none; color: #004080;
+  }
+  button {
+    cursor: pointer;
+  }
+
+  /* HEADER */
+  header {
+    background: #cce7ff;
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    border-bottom: 2px solid #0099ff;
+  }
+  header .brand {
+    font-size: 1.8rem; font-weight: 700;
+    display: flex; align-items: center; gap: 6px;
+  }
+  header .brand::before {
+    content: "👓";
+    font-size: 1.8rem;
+  }
+  header .category-link {
+    background: #0099ff; color: white; border: none;
+    padding: 8px 16px; border-radius: 5px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+  }
+  header .category-link:hover {
+    background: #007acc;
+  }
+
+  /* SEARCH BAR */
+  .search-bar-container {
+    background: #e6f0ff;
+    padding: 10px 20px;
+    display: flex; justify-content: center;
+  }
+  .search-bar-container input[type="search"] {
+    width: 100%; max-width: 600px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: 2px solid #0099ff;
+    border-radius: 30px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .search-bar-container input[type="search"]:focus {
+    border-color: #0066cc;
+  }
+
+  /* ICONS BAR */
+  .icons-bar {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 110;
+  }
+  .icons-bar button {
+    background: transparent;
+    border: none;
+    font-size: 1.8rem;
+    position: relative;
+  }
+  .icons-bar button:hover {
+    color: #0066cc;
+  }
+  .icons-bar button .badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #ff3333;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+  }
+
+  .carousel-container {
+  position: relative;
+  width: 1500px;
+  height: 350px;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: white;
+}
+
+.carousel-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+.nav:hover {
+  background-color: rgba(0,0,0,0.6);
+}
+
+.prev {
+  left: 15px;
+}
+
+.next {
+  right: 15px;
+}
+
+  /* PRODUCTS GRID */
+  .products-container {
+    max-width: 1000px;
+    margin: 20px auto 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 15px;
+  }
+  .product-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  .product-info {
+    padding: 12px 15px;
+    flex-grow: 1;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .product-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: #004080;
+  }
+  .product-info p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+    color: #333;
+  }
+  .price {
+    font-weight: 700;
+    color: #007acc;
+    margin-bottom: 12px;
+  }
+  .btn-group {
+    display: flex;
+    gap: 8px;
+  }
+  .btn-group button {
+    flex: 1;
+    padding: 8px 0;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    background: #0099ff;
+    transition: background 0.3s;
+  }
+  .btn-group button:hover {
+    background: #007acc;
+  }
+  .btn-wishlist {
+    background: #ff6666;
+  }
+  .btn-wishlist:hover {
+    background: #cc0000;
+  }
+
+  /* MODALS COMMON */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 120;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal {
+    background: white;
+    border-radius: 12px;
+    max-width: 480px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    position: relative;
+  }
+  .modal .close-btn {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+  }
+  .modal .close-btn:hover {
+    color: #0099ff;
+  }
+
+  /* PRODUCT DETAILS MODAL */
+  .modal-product-image {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+  }
+  .modal-content {
+    padding: 15px 20px;
+  }
+  .modal-content h2 {
+    margin-top: 0;
+    color: #004080;
+  }
+  .modal-content p {
+    color: #333;
+    margin: 8px 0;
+  }
+  .modal-content .price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #007acc;
+    margin-bottom: 15px;
+  }
+  .modal-content .btn-group {
+    display: flex;
+    gap: 10px;
+  }
+  .modal-content .btn-group button {
+    flex: 1;
+    padding: 10px 0;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-size: 1rem;
+  }
+  .modal-content .btn-addcart {
+    background: #007acc;
+  }
+  .modal-content .btn-wishlist {
+    background: #cc0000;
+  }
+
+  /* CART & WISHLIST MODAL CONTENT */
+  .cart-wishlist-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px 20px;
+  }
+  .cart-wishlist-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  .cart-wishlist-item img {
+    width: 70px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .cart-wishlist-item-info {
+    flex-grow: 1;
+  }
+  .cart-wishlist-item-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+    color: #004080;
+  }
+  .cart-wishlist-item-info p {
+    margin: 2px 0;
+    font-size: 0.9rem;
+    color: #333;
+  }
+  .cart-wishlist-item-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cart-wishlist-item-actions button {
+    background: #0099ff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    padding: 6px 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+  }
+  .cart-wishlist-item-actions button:hover {
+    background: #0066cc;
+  }
+  .cart-wishlist-item-actions .btn-remove {
+    background: #cc0000;
+  }
+  .cart-wishlist-item-actions .btn-remove:hover {
+    background: #990000;
+  }
+
+  /* CART MODAL BUY BUTTON */
+  .cart-modal-footer {
+    padding: 12px 20px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+  }
+  .cart-modal-footer button {
+    background: #0099ff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 700;
+    color: white;
+    font-size: 1rem;
+    transition: background 0.3s;
+  }
+  .cart-modal-footer button:hover {
+    background: #007acc;
+  }
+
+  /* PAYMENT MODAL */
+  .payment-form {
+    padding: 20px;
+  }
+  .payment-form h3 {
+    margin-top: 0;
+    color: #004080;
+  }
+  .payment-form label {
+    display: block;
+    margin: 12px 0 6px 0;
+    font-weight: 600;
+  }
+  .payment-form select,
+  .payment-form input[type="text"],
+  .payment-form input[type="email"],
+  .payment-form input[type="tel"],
+  .payment-form input[type="number"] {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1.5px solid #0099ff;
+    outline: none;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+  .payment-form select:focus,
+  .payment-form input:focus {
+    border-color: #0066cc;
+  }
+  .payment-form button {
+    margin-top: 20px;
+    width: 100%;
+    background: #007acc;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .payment-form button:hover {
+    background: #005a99;
+  }
+  .thank-you-message {
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 40px 20px;
+    color: #007acc;
+  }
+
+  /* Responsive */
+  @media(max-width: 600px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .icons-bar {
+      top: 70px;
+      right: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand" aria-label="Brand name">A’Lenz</div>
+  <a href="index.html" class="category-link" aria-label="Back to Categories">← Categories</a>
+  <button class="category-link" onclick="openTrackOrderModal()">Track Order</button>
+</header>
+
+
+<!-- Track Order Modal -->
+<div class="modal-overlay" id="trackOrderModal" role="dialog" aria-modal="true" aria-labelledby="trackOrderTitle" tabindex="-1">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal(trackOrderModal)" aria-label="Close track order modal">&times;</button>
+    <div class="payment-form">
+      <h3 id="trackOrderTitle">Track Your Order</h3>
+      <form id="trackOrderForm">
+        <label for="orderId">Order ID</label>
+        <input type="text" id="orderId" placeholder="Enter your Order ID" required />
+
+        <label for="orderPhone">Phone Number</label>
+        <input type="tel" id="orderPhone" placeholder="Enter your Phone Number" pattern="[0-9]{10}" required />
+
+        <button type="submit">Track</button>
+      </form>
+      <div class="thank-you-message" id="trackOrderStatus" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+<div class="search-bar-container">
+  <input type="search" id="searchInput" placeholder="Search women's eyewear..." aria-label="Search products" />
+</div>
+
+<div class="icons-bar" role="region" aria-label="Cart and Wishlist Icons">
+  <button id="wishlistBtn" aria-haspopup="dialog" aria-controls="wishlistModal" aria-label="Open Wishlist">
+    ❤️ <span class="badge" id="wishlistCount">0</span>
+  </button>
+  <button id="cartBtn" aria-haspopup="dialog" aria-controls="cartModal" aria-label="Open Cart">
+    🛒 <span class="badge" id="cartCount">0</span>
+  </button>
+</div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Carousel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="carousel-container">
+    <button class="nav prev" onclick="prevSlide()">&#10094;</button>
+    <img id="carouselImage" src="images/banner" alt="Carousel Image" />
+    <button class="nav next" onclick="nextSlide()">&#10095;</button>
+  </div>
+
+  
+
+
+<!-- Products Grid -->
+<div class="products-container" id="productsContainer" aria-live="polite">
+  <!-- Products inserted by JS -->
+</div>
+
+<!-- Product Details Modal -->
+<div class="modal-overlay" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" tabindex="-1">
+  <div class="modal">
+    <button class="close-btn" aria-label="Close product details modal">&times;</button>
+    <img src="" alt="" class="modal-product-image" id="modalProductImage" />
+    <div class="modal-content">
+      <h2 id="productModalTitle"></h2>
+      <p id="productModalDesc"></p>
+      <p class="price" id="productModalPrice"></p>
+      <div class="btn-group">
+        <button class="btn-addcart" id="modalAddToCartBtn">Add to Cart</button>
+        <button class="btn-wishlist" id="modalAddToWishlistBtn">Add to Wishlist</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cart Modal -->
+<div class="modal-overlay" id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle" tabindex="-1">
+  <div class="modal">
+    <button class="close-btn" aria-label="Close cart modal">&times;</button>
+    <h2 id="cartModalTitle" style="padding: 20px 20px 10px;">Your Cart</h2>
+    <div class="cart-wishlist-list" id="cartItemsList"></div>
+    <div class="cart-modal-footer">
+      <button id="cartBuyBtn" aria-label="Buy items in cart">Buy</button>
+    </div>
+  </div>
+</div>
+
+<!-- Wishlist Modal -->
+<div class="modal-overlay" id="wishlistModal" role="dialog" aria-modal="true" aria-labelledby="wishlistModalTitle" tabindex="-1">
+  <div class="modal">
+    <button class="close-btn" aria-label="Close wishlist modal">&times;</button>
+    <h2 id="wishlistModalTitle" style="padding: 20px 20px 10px;">Your Wishlist</h2>
+    <div class="cart-wishlist-list" id="wishlistItemsList"></div>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle" tabindex="-1">
+  <div class="modal">
+    <button class="close-btn" aria-label="Close payment modal">&times;</button>
+    <div class="payment-form" id="paymentForm">
+      <h3 id="paymentModalTitle">Payment & Personal Information</h3>
+      <form id="paymentFormElement">
+        <label for="paymentMode">Payment Mode</label>
+        <select id="paymentMode" required>
+          <option value="">Select a payment method</option>
+          <option value="UPI">UPI</option>
+          <option value="Credit Card">Credit Card</option>
+          <option value="Debit Card">Debit Card</option>
+          <option value="Net Banking">Net Banking</option>
+        </select>
+
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Your full name" required />
+
+        <label for="address">Address</label>
+        <input type="text" id="address" placeholder="Your address" required />
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="Your phone number" pattern="[0-9]{10}" required />
+
+        <label for="email">Email ID</label>
+        <input type="email" id="email" placeholder="Your email address" required />
+
+        <label for="pincode">Pincode</label>
+        <input type="number" id="pincode" placeholder="Your area pincode" required />
+
+        <button type="submit">Submit Payment</button>
+      </form>
+      <div class="thank-you-message" id="thankYouMessage" style="display:none;">
+        Thank you for your purchase! 🎉
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // PRODUCTS DATA
+  const products = [
+  // Sunglasses
+  {
+    id: 101,
+    name: "Prada Cat-Eye Sunglasses",
+    description: "Stylish and bold cat-eye sunglasses with UV protection.",
+    price: 4999,
+    image: "data:image/jpeg;base64,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"
+  },
+  {
+    id: 102,
+    name: "Chanel Oversized Sunglasses",
+    description: "Elegant oversized frames perfect for sunny days.",
+    price: 6999,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVV_4XqNn4RmUJjeaVU7cG0oS33CbGvCcdrA&s"
+  },
+  {
+    id: 103,
+    name: "Ray-Ban Round Metal Sunglasses",
+    description: "Classic round metal frame with polarized lenses.",
+    price: 3999,
+    image: "https://www.therevury.com/cdn/shop/products/ray-ban-accessories-one-size-ray-ban-round-metal-sunglasses-28209116086354_grande.jpg?v=1677270426"
+  },
+  {
+    id: 104,
+    name: "Michael Kors Tortoise Sunglasses",
+    description: "Chic tortoise shell frame with gradient lenses.",
+    price: 4599,
+    image: "https://statics-cdn-v2.fashionette.net/transform/74c787f8-f3fe-4b85-9298-fd86f72db17f/A0437668-PDP-2?io=transform:extend,width:728,height:728,background:white&quality=100"
+  },
+  {
+    id: 105,
+    name: "Gucci Floral Sunglasses",
+    description: "Floral design frames for a feminine look.",
+    price: 5999,
+    image: "https://www.meagansmoda.com/wp-content/uploads/2017/04/Gucci-floral-print-silk-scarf-Dior-oversized-Extase-beige-sunglasses.jpg"
+  },
+
+  // Screen Glasses
+  {
+    id: 106,
+    name: "Lenskart Blue Light Blockers",
+    description: "Protect your eyes with these trendy screen glasses.",
+    price: 1299,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOnnXWpR2EosSdwHKu6Zbx-N2nxF8pg6hVAQ&s"
+  },
+  {
+    id: 107,
+    name: "Warby Parker Blue Light Glasses",
+    description: "Lightweight frames that block harmful blue light.",
+    price: 1599,
+    image: "https://www.ocushield.com/cdn/shop/files/rachel-clarkson_400x.jpg?v=1614353927"
+  },
+  {
+    id: 108,
+    name: "Kate Spade Screen Protectors",
+    description: "Fashionable glasses for all-day screen use.",
+    price: 1399,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpvXKw2IKCKCLhcYQ2oordDhx-X5q75igselY0BXh3CcszIrr_J-lUtODlRx-aatiHQ_8&usqp=CAU"
+  },
+
+  // Contact Lenses
+  {
+    id: 109,
+    name: "Acuvue Oasys for Astigmatism",
+    description: "Comfortable contact lenses designed for astigmatism.",
+    price: 2600,
+    image: "https://m.media-amazon.com/images/I/41+wbKhjMEL._AC_UF1000,1000_QL80_.jpg"
+  },
+  {
+    id: 110,
+    name: "Bausch + Lomb Soft Contact Lenses",
+    description: "Daily disposable lenses for all-day comfort.",
+    price: 2200,
+    image: "https://m.media-amazon.com/images/I/61QtPBGIUmL._AC_UF1000,1000_QL80_.jpg"
+  },
+  {
+    id: 111,
+    name: "FreshLook Color Contact Lenses",
+    description: "Enhance your eye color naturally and safely.",
+    price: 2300,
+    image: "https://5.imimg.com/data5/LW/AM/MY-29688867/fresh-look-color-blends-eye-lenses-500x500.png"
+  },
+
+  // Eyeglasses
+  {
+    id: 112,
+    name: "Ray-Ban Prescription Glasses",
+    description: "Classic style frames with prescription lenses.",
+    price: 3999,
+    image: "https://m.media-amazon.com/images/I/81KvDTwbN4L._AC_UY350_.jpg"
+  },
+  {
+    id: 113,
+    name: "Prada Optical Frames",
+    description: "Elegant and durable frames for daily use.",
+    price: 4599,
+    image: "https://a-us.storyblok.com/f/1014719/900x893/442bee4dbd/mobileprada.jpg"
+  },
+  {
+    id: 114,
+    name: "Michael Kors Eyeglasses",
+    description: "Fashionable frames with comfortable fit.",
+    price: 3799,
+    image: "https://gv-brxm.imgix.net/binaries/_ht_1743499337909/content/gallery/gb-visionexpress/content-pages/designer-brands/michael-kors/ss25/glasses-block.jpg?fit=fillmax&w=1366&h=1366&auto=format"
+  }
+];
+
+
+  // CART AND WISHLIST STORAGE
+  let cart = [];
+  let wishlist = [];
+
+  // DOM ELEMENTS
+  const productsContainer = document.getElementById('productsContainer');
+  const searchInput = document.getElementById('searchInput');
+
+  const productModal = document.getElementById('productModal');
+  const modalProductImage = document.getElementById('modalProductImage');
+  const productModalTitle = document.getElementById('productModalTitle');
+  const productModalDesc = document.getElementById('productModalDesc');
+  const productModalPrice = document.getElementById('productModalPrice');
+  const modalAddToCartBtn = document.getElementById('modalAddToCartBtn');
+  const modalAddToWishlistBtn = document.getElementById('modalAddToWishlistBtn');
+  const productModalCloseBtn = productModal.querySelector('.close-btn');
+
+  const cartModal = document.getElementById('cartModal');
+  const cartBtn = document.getElementById('cartBtn');
+  const cartItemsList = document.getElementById('cartItemsList');
+  const cartModalCloseBtn = cartModal.querySelector('.close-btn');
+  const cartBuyBtn = document.getElementById('cartBuyBtn');
+  const cartCount = document.getElementById('cartCount');
+
+  const wishlistModal = document.getElementById('wishlistModal');
+  const wishlistBtn = document.getElementById('wishlistBtn');
+  const wishlistItemsList = document.getElementById('wishlistItemsList');
+  const wishlistModalCloseBtn = wishlistModal.querySelector('.close-btn');
+  const wishlistCount = document.getElementById('wishlistCount');
+
+  const paymentModal = document.getElementById('paymentModal');
+  const paymentModalCloseBtn = paymentModal.querySelector('.close-btn');
+  const paymentFormElement = document.getElementById('paymentFormElement');
+  const thankYouMessage = document.getElementById('thankYouMessage');
+
+  const carouselImage = document.getElementById('carouselImage');
+  const carouselLeftArrow = document.querySelector('.carousel .arrow.left');
+  const carouselRightArrow = document.querySelector('.carousel .arrow.right');
+
+  // Carousel images
+  const carouselImages = [
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80"
+  ];
+  let currentCarouselIndex = 0;
+
+  // Render products (with optional filtering)
+  function renderProducts(filter = "") {
+    const filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+    productsContainer.innerHTML = "";
+    if(filtered.length === 0){
+      productsContainer.innerHTML = "<p style='grid-column:1/-1; text-align:center;'>No products found.</p>";
+      return;
+    }
+    filtered.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" tabindex="0" data-id="${product.id}" />
+        <div class="product-info">
+          <h3>${product.name}</h3>
+          <p class="price">₹${product.price}</p>
+          <div class="btn-group">
+            <button class="btn-addcart" data-id="${product.id}">Add to Cart</button>
+            <button class="btn-wishlist" data-id="${product.id}">Wishlist</button>
+          </div>
+        </div>
+      `;
+      productsContainer.appendChild(card);
+    });
+  }
+
+  // Show product details modal
+  function showProductModal(productId) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    modalProductImage.src = product.image;
+    modalProductImage.alt = product.name;
+    productModalTitle.textContent = product.name;
+    productModalDesc.textContent = product.description;
+    productModalPrice.textContent = `₹${product.price}`;
+    modalAddToCartBtn.dataset.id = productId;
+    modalAddToWishlistBtn.dataset.id = productId;
+    productModal.classList.add('active');
+    productModal.focus();
+  }
+
+  // Close all modals helper
+  function closeModal(modal) {
+    modal.classList.remove('active');
+    // reset payment modal form and thank you message
+    if(modal === paymentModal){
+      paymentFormElement.style.display = "block";
+      thankYouMessage.style.display = "none";
+      paymentFormElement.reset();
+    }
+  }
+
+  // Update counts for cart and wishlist badges
+  function updateCounts() {
+    cartCount.textContent = cart.length;
+    wishlistCount.textContent = wishlist.length;
+  }
+
+  // Render cart items inside modal
+  function renderCart() {
+    if (cart.length === 0) {
+      cartItemsList.innerHTML = "<p>Your cart is empty.</p>";
+      cartBuyBtn.disabled = true;
+      return;
+    }
+    cartBuyBtn.disabled = false;
+    cartItemsList.innerHTML = "";
+    cart.forEach(product => {
+      const item = document.createElement('div');
+      item.className = 'cart-wishlist-item';
+      item.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <div class="cart-wishlist-item-info">
+          <h4>${product.name}</h4>
+          <p>₹${product.price}</p>
+        </div>
+        <div class="cart-wishlist-item-actions">
+          <button class="btn-remove" data-id="${product.id}" aria-label="Remove from cart">Remove</button>
+        </div>
+      `;
+      cartItemsList.appendChild(item);
+    });
+  }
+
+  // Render wishlist items inside modal
+  function renderWishlist() {
+    if (wishlist.length === 0) {
+      wishlistItemsList.innerHTML = "<p>Your wishlist is empty.</p>";
+      return;
+    }
+    wishlistItemsList.innerHTML = "";
+    wishlist.forEach(product => {
+      const item = document.createElement('div');
+      item.className = 'cart-wishlist-item';
+      item.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <div class="cart-wishlist-item-info">
+          <h4>${product.name}</h4>
+          <p>₹${product.price}</p>
+        </div>
+        <div class="cart-wishlist-item-actions">
+          <button class="btn-remove" data-id="${product.id}" aria-label="Remove from wishlist">Remove</button>
+          <button class="btn-addcart" data-id="${product.id}" aria-label="Add to cart from wishlist">Add to Cart</button>
+        </div>
+      `;
+      wishlistItemsList.appendChild(item);
+    });
+  }
+
+  // Add product to cart if not already added
+  function addToCart(productId) {
+    if (cart.some(p => p.id === productId)) return;
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    cart.push(product);
+    updateCounts();
+  }
+
+  // Add product to wishlist if not already added
+  function addToWishlist(productId) {
+    if (wishlist.some(p => p.id === productId)) return;
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+    wishlist.push(product);
+    updateCounts();
+  }
+
+  // Remove product from cart by id
+  function removeFromCart(productId) {
+    cart = cart.filter(p => p.id !== productId);
+    updateCounts();
+  }
+
+  // Remove product from wishlist by id
+  function removeFromWishlist(productId) {
+    wishlist = wishlist.filter(p => p.id !== productId);
+    updateCounts();
+  }
+
+  // Event listeners
+  // Search
+  searchInput.addEventListener('input', (e) => {
+    renderProducts(e.target.value);
+  });
+
+  // Product image click to open product modal
+  productsContainer.addEventListener('click', (e) => {
+    if(e.target.tagName === 'IMG') {
+      const pid = Number(e.target.dataset.id);
+      if(pid) showProductModal(pid);
+    }
+  });
+
+  // Product image keyboard enter key open product modal
+  productsContainer.addEventListener('keydown', (e) => {
+    if(e.target.tagName === 'IMG' && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      const pid = Number(e.target.dataset.id);
+      if(pid) showProductModal(pid);
+    }
+  });
+
+  // Add to cart / wishlist buttons on product cards
+  productsContainer.addEventListener('click', (e) => {
+    if(e.target.classList.contains('btn-addcart')){
+      const pid = Number(e.target.dataset.id);
+      if(pid){
+        addToCart(pid);
+        alert("Added to Cart");
+      }
+    }
+    if(e.target.classList.contains('btn-wishlist')){
+      const pid = Number(e.target.dataset.id);
+      if(pid){
+        addToWishlist(pid);
+        alert("Added to Wishlist");
+      }
+    }
+  });
+
+  // Product modal buttons
+  modalAddToCartBtn.addEventListener('click', () => {
+    const pid = Number(modalAddToCartBtn.dataset.id);
+    if(pid){
+      addToCart(pid);
+      alert("Added to Cart");
+    }
+  });
+  modalAddToWishlistBtn.addEventListener('click', () => {
+    const pid = Number(modalAddToWishlistBtn.dataset.id);
+    if(pid){
+      addToWishlist(pid);
+      alert("Added to Wishlist");
+    }
+  });
+
+  // Close product modal
+  productModalCloseBtn.addEventListener('click', () => closeModal(productModal));
+  productModal.addEventListener('click', e => {
+    if(e.target === productModal) closeModal(productModal);
+  });
+
+  // Open cart modal
+  cartBtn.addEventListener('click', () => {
+    renderCart();
+    cartModal.classList.add('active');
+    cartModal.focus();
+  });
+
+  // Close cart modal
+  cartModalCloseBtn.addEventListener('click', () => closeModal(cartModal));
+  cartModal.addEventListener('click', e => {
+    if(e.target === cartModal) closeModal(cartModal);
+  });
+
+  // Open wishlist modal
+  wishlistBtn.addEventListener('click', () => {
+    renderWishlist();
+    wishlistModal.classList.add('active');
+    wishlistModal.focus();
+  });
+
+  // Close wishlist modal
+  wishlistModalCloseBtn.addEventListener('click', () => closeModal(wishlistModal));
+  wishlistModal.addEventListener('click', e => {
+    if(e.target === wishlistModal) closeModal(wishlistModal);
+  });
+
+  // Remove buttons inside cart & wishlist modals
+  cartItemsList.addEventListener('click', e => {
+    if(e.target.classList.contains('btn-remove')){
+      const pid = Number(e.target.dataset.id);
+      if(pid){
+        removeFromCart(pid);
+        renderCart();
+      }
+    }
+  });
+
+  wishlistItemsList.addEventListener('click', e => {
+    if(e.target.classList.contains('btn-remove')){
+      const pid = Number(e.target.dataset.id);
+      if(pid){
+        removeFromWishlist(pid);
+        renderWishlist();
+      }
+    }
+    if(e.target.classList.contains('btn-addcart')){
+      const pid = Number(e.target.dataset.id);
+      if(pid){
+        addToCart(pid);
+        removeFromWishlist(pid);
+        renderWishlist();
+        alert("Moved to Cart");
+      }
+    }
+  });
+
+  // Buy button in cart modal opens payment modal
+  cartBuyBtn.addEventListener('click', () => {
+    if(cart.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+    closeModal(cartModal);
+    paymentModal.classList.add('active');
+    paymentModal.focus();
+  });
+
+  // Close payment modal
+  paymentModalCloseBtn.addEventListener('click', () => closeModal(paymentModal));
+  paymentModal.addEventListener('click', e => {
+    if(e.target === paymentModal) closeModal(paymentModal);
+  });
+
+  // Payment form submit
+  paymentFormElement.addEventListener('submit', e => {
+    e.preventDefault();
+    // Simple validation done by required fields and pattern on phone input
+    // Show thank you message
+    paymentFormElement.style.display = "none";
+    thankYouMessage.style.display = "block";
+    // Clear cart after payment
+    cart = [];
+    updateCounts();
+    setTimeout(() => {
+      closeModal(paymentModal);
+    }, 3000);
+  });
+
+ const images = [
+  'images/banner',
+  'images/banner 2',
+  'images/banner 3'
+];
+
+let currentIndex = 0;
+const imageElement = document.getElementById('carouselImage');
+
+function showImage(index) {
+  imageElement.src = images[index];
+}
+
+function nextSlide() {
+  currentIndex = (currentIndex + 1) % images.length;
+  showImage(currentIndex);
+}
+
+function prevSlide() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  showImage(currentIndex);
+}
+
+   // TRACK ORDER MODAL
+const trackOrderModal = document.getElementById('trackOrderModal');
+const trackOrderForm = document.getElementById('trackOrderForm');
+const trackOrderStatus = document.getElementById('trackOrderStatus');
+
+function openTrackOrderModal() {
+  trackOrderModal.classList.add('active');
+  trackOrderModal.focus();
+}
+
+trackOrderForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const orderId = document.getElementById('orderId').value.trim();
+  const phone = document.getElementById('orderPhone').value.trim();
+  if (orderId && phone) {
+    trackOrderForm.style.display = "none";
+    trackOrderStatus.innerHTML = `Order <strong>#${orderId}</strong> is currently <span style="color:green;">Out for Delivery</span> 🚚`;
+    trackOrderStatus.style.display = "block";
+    setTimeout(() => {
+      closeModal(trackOrderModal);
+      trackOrderForm.reset();
+      trackOrderForm.style.display = "block";
+      trackOrderStatus.style.display = "none";
+    }, 4000);
+  }
+}
+);
+
+
+  // Initialize page
+  renderProducts();
+  updateCounts();
+  updateCarousel();
+
+</script>
+</body>
+</html>
